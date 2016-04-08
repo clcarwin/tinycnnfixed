@@ -45,11 +45,11 @@ public:
 class cross_entropy {
 public:
     static float_t f(float_t y, float_t t) {
-        return -t * std::log(y) - (float_t(1) - t) * std::log(float_t(1) - y);
+        return -t * std::log(fmax(y,1e-10)) - (float_t(1) - t) * std::log(fmax((float_t(1) - y),1e-10));
     }
 
     static float_t df(float_t y, float_t t) {
-        return (y - t) / (y * (float_t(1) - y));
+        return (y - t) / fmax((y * (float_t(1) - y)),1e-10);
     }
 };
 

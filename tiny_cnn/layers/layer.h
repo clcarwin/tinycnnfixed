@@ -79,6 +79,16 @@ public:
         bias_init_->fill(&b_, static_cast<cnn_size_t>(fan_in_size()),
                          static_cast<cnn_size_t>(fan_out_size()));
 
+        //carwin
+        for(int i=0;i<W_.size();i++)
+        {
+            float p = (float)rand() / (RAND_MAX);
+            if(p<0.5) W_[i] = -4.0/128.0;
+            else W_[i] = 4.0/128.0;
+
+        }
+        for(int i=0;i<b_.size();i++) b_[i]=0;
+
         std::fill(Whessian_.begin(), Whessian_.end(), float_t(0));
         std::fill(bhessian_.begin(), bhessian_.end(), float_t(0));
         clear_diff(CNN_TASK_SIZE);

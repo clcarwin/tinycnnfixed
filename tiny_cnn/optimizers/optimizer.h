@@ -184,7 +184,22 @@ struct gradient_descent : public optimizer<false> {
 
     void update(const vec_t& dW, const vec_t& /*Hessian*/, vec_t& W) {
         for_i(static_cast<int>(W.size()), [&](int i){
-            W[i] = W[i] - alpha * (dW[i] + lambda * W[i]);
+            // W[i] = W[i] - alpha * (dW[i] + lambda * W[i]);
+            float g = alpha * (dW[i] + lambda * W[i]);
+            g *= 128.0;
+            float r = g;
+            g = floor(g);
+            r -= g;
+
+            float p = (float)rand() / (RAND_MAX);   //[0.0,1.0)
+            if(r>p) g += 1.0;
+            g /= 128.0;
+
+            W[i] = W[i] - g;
+
+            if(W[i]>127.0/128.0) W[i]=127.0/128.0;
+            if(W[i]<-1.0) W[i]=-1.0;
+
         });
     }
 
